@@ -1,0 +1,34 @@
+{
+  "name": "robinhood-to-csv",
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "description": "Export Robinhood transactions to CSV",
+  "bin": {
+    "robinhood-to-csv": "bin/robinhood-to-csv.js"
+  },
+  "scripts": {},
+  "author": "Mark Battersby",
+  "license": "MIT",
+  "dependencies": {
+    "json-2-csv": "^2.0.18",
+    "prompt": "^1.0.0",
+    "robinhood": "markalfred/robinhood-node"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/markalfred/robinhood-to-csv.git"
+  },
+  "keywords": [
+    "robinhood",
+    "finance",
+    "csv",
+    "export"
+  ],
+  "bugs": {
+    "url": "https://github.com/markalfred/robinhood-to-csv/issues"
+  },
+  "homepage": "https://github.com/markalfred/robinhood-to-csv#readme"
+}
