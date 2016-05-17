@@ -8,7 +8,7 @@ const orders = require('./fixtures/orders')
 const login = require('./fixtures/login')
 const instruments = require('./fixtures/instruments')
 
-const api = require('../lib/api')
+const API = require('../lib/api')
 const utils = require('../lib/utils')
 
 const mockAuth = {
@@ -22,6 +22,9 @@ const realAuth = {
 }
 
 describe('Robinhood API', () => {
+  let api
+  beforeEach(() => { api = new API })
+
   describe('Library', () => {
     const PUBLIC_METHODS = [
       'orders',
