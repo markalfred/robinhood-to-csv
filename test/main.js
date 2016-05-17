@@ -43,10 +43,11 @@ describe('Methods', () => {
 
   describe('login', () => {
     let spies = {}
+    const mockAuth = { username: 'foo', password: 'bar' }
 
     beforeEach(() => {
       scope
-        .post('/api-token-auth/', { username: 'foo', password: 'bar' })
+        .post('/api-token-auth/', mockAuth)
         .reply(200, { token: '000' })
 
       spies.start = sinon.spy(prompt, 'start')
@@ -76,7 +77,12 @@ describe('Methods', () => {
       main.login().should.be.a('promise')
     })
 
-    it('results in a logged-in API object')
+    it('results in a login token', (done) => {
+      main.login(mockAuth).then((result) => {
+        result.should.have.property('token')
+        done()
+      })
+    })
   })
 
   describe('getOrders', () => {
