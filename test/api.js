@@ -81,6 +81,26 @@ describe('Robinhood API', () => {
       })
     })
 
+    describe('loggedIn', () => {
+      beforeEach(() => {
+        scope
+          .post('/api-token-auth/', mockAuth)
+          .reply(200, login)
+      })
+
+      it('is true when the user has logged in', (done) => {
+        api.login(mockAuth).then(() => {
+          api.loggedIn().should.be.true
+          done()
+        })
+      })
+
+      it('is false when the user has not logged in', (done) => {
+        api.loggedIn().should.be.false
+        done()
+      })
+    })
+
     describe('orders', () => {
       beforeEach((/*done*/) => {
         scope
