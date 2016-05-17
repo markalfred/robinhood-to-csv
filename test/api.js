@@ -46,7 +46,7 @@ describe('Robinhood API', () => {
 
   describe('Method', () => {
     let scope
-    before(() => { scope = nock('https://api.robinhood.com')/*.log(console.log)*/ })
+    before(() => { scope = nock('https://api.robinhood.com') })
     after(() => { nock.cleanAll() })
 
     describe('login', () => {
@@ -82,20 +82,10 @@ describe('Robinhood API', () => {
     })
 
     describe('orders', () => {
-      // const mockAuth = { username: 'foo', password: 'bar' }
-
       beforeEach((/*done*/) => {
-        // scope
-        //   .post('/api-token-auth/', mockAuth)
-        //   .reply(200, login)
-
         scope
           .get('/orders/')
           .reply(200, orders)
-
-        // api.login(mockAuth).then(() => {
-        //   done()
-        // })
       })
 
       it('returns promise', () => {

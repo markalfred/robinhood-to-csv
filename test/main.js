@@ -38,7 +38,7 @@ describe('Library', () => {
 describe('Methods', () => {
   let scope
 
-  before(() => { scope = nock('https://api.robinhood.com')/*.log(console.log)*/ })
+  before(() => { scope = nock('https://api.robinhood.com') })
   after(() => { nock.cleanAll() })
 
   describe('login', () => {
