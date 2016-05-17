@@ -1,5 +1,7 @@
 # Robinhood to CSV
 
+[![CircleCI](https://circleci.com/gh/markalfred/robinhood-to-csv.svg?style=svg)](https://circleci.com/gh/markalfred/robinhood-to-csv)
+
 ```bash
 $ npm install -g robinhood-to-csv
 $ robinhood-to-csv
