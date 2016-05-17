@@ -2,7 +2,7 @@
   "name": "robinhood-to-csv",
   "version": "0.1.0",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "description": "Export Robinhood transactions to CSV",
   "bin": {
@@ -12,6 +12,7 @@
   "author": "Mark Battersby",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.9.1",
     "json-2-csv": "^2.0.18",
     "prompt": "^1.0.0",
     "robinhood": "markalfred/robinhood-node"
