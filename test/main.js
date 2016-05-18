@@ -38,15 +38,16 @@ describe('Library', () => {
 describe('Methods', () => {
   let scope
 
-  before(() => { scope = nock('https://api.robinhood.com')/*.log(console.log)*/ })
+  before(() => { scope = nock('https://api.robinhood.com') })
   after(() => { nock.cleanAll() })
 
   describe('login', () => {
     let spies = {}
+    const mockAuth = { username: 'foo', password: 'bar' }
 
     beforeEach(() => {
       scope
-        .post('/api-token-auth/', { username: 'foo', password: 'bar' })
+        .post('/api-token-auth/', mockAuth)
         .reply(200, { token: '000' })
 
       spies.start = sinon.spy(prompt, 'start')
@@ -76,7 +77,12 @@ describe('Methods', () => {
       main.login().should.be.a('promise')
     })
 
-    it('results in a logged-in API object')
+    it('results in a login token', (done) => {
+      main.login(mockAuth).then((result) => {
+        result.should.have.property('token')
+        done()
+      })
+    })
   })
 
   describe('getOrders', () => {
@@ -152,6 +158,12 @@ describe('Methods', () => {
 
     it('returns the csv promise', () => {
       main.convertToCsv([]).should.be.a('promise')
+    })
+
+    it('rejects bad csv data', (done) => {
+      main.convertToCsv('foo')
+        .then(() => done(new Error('This should have failed.')))
+        .catch(() => done())
     })
 
     it('prints csv to stdout', (done) => {

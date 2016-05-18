@@ -8,7 +8,7 @@ const orders = require('./fixtures/orders')
 const login = require('./fixtures/login')
 const instruments = require('./fixtures/instruments')
 
-const api = require('../lib/api')
+const API = require('../lib/api')
 const utils = require('../lib/utils')
 
 const mockAuth = {
@@ -22,6 +22,9 @@ const realAuth = {
 }
 
 describe('Robinhood API', () => {
+  let api
+  beforeEach(() => { api = new API })
+
   describe('Library', () => {
     const PUBLIC_METHODS = [
       'orders',
@@ -43,7 +46,7 @@ describe('Robinhood API', () => {
 
   describe('Method', () => {
     let scope
-    before(() => { scope = nock('https://api.robinhood.com')/*.log(console.log)*/ })
+    before(() => { scope = nock('https://api.robinhood.com') })
     after(() => { nock.cleanAll() })
 
     describe('login', () => {
@@ -78,21 +81,31 @@ describe('Robinhood API', () => {
       })
     })
 
+    describe('loggedIn', () => {
+      beforeEach(() => {
+        scope
+          .post('/api-token-auth/', mockAuth)
+          .reply(200, login)
+      })
+
+      it('is true when the user has logged in', (done) => {
+        api.login(mockAuth).then(() => {
+          api.loggedIn().should.be.true
+          done()
+        })
+      })
+
+      it('is false when the user has not logged in', (done) => {
+        api.loggedIn().should.be.false
+        done()
+      })
+    })
+
     describe('orders', () => {
-      // const mockAuth = { username: 'foo', password: 'bar' }
-
       beforeEach((/*done*/) => {
-        // scope
-        //   .post('/api-token-auth/', mockAuth)
-        //   .reply(200, login)
-
         scope
           .get('/orders/')
           .reply(200, orders)
-
-        // api.login(mockAuth).then(() => {
-        //   done()
-        // })
       })
 
       it('returns promise', () => {
