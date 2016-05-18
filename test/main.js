@@ -160,6 +160,12 @@ describe('Methods', () => {
       main.convertToCsv([]).should.be.a('promise')
     })
 
+    it('rejects bad csv data', (done) => {
+      main.convertToCsv('foo')
+        .then(() => done(new Error('This should have failed.')))
+        .catch(() => done())
+    })
+
     it('prints csv to stdout', (done) => {
       main.convertToCsv([]).then(() => {
         spy.should.have.been.called
