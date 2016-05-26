@@ -89,6 +89,7 @@ describe('Methods', () => {
     beforeEach(() => {
       scope
         .get('/orders/')
+        .query(true)
         .reply(200, orders)
     })
 

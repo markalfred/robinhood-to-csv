@@ -26,6 +26,7 @@ describe('Binary', () => {
       .reply(200, login)
 
       .get('/orders/')
+      .query(true)
       .reply(200, orders)
 
       .get(/\/instruments\/.+/)
