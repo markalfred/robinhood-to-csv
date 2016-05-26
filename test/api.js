@@ -105,11 +105,15 @@ describe('Robinhood API', () => {
       beforeEach(() => {
         scope
           .get('/orders/')
-          .query({ cursor: 0 })
+          .query({ cursor: '' })
           .reply(200, orders[0])
 
           .get('/orders/')
-          .query({ cursor: 1 })
+          .query({ cursor: 'zero' })
+          .reply(200, orders[0])
+
+          .get('/orders/')
+          .query({ cursor: 'one' })
           .reply(200, orders[1])
       })
 
@@ -136,18 +140,18 @@ describe('Robinhood API', () => {
         it('defaults to the first page')
 
         it('returns the next page number', (done) => {
-          api.orders(0).then((response) => {
+          api.orders('zero').then((response) => {
             response.should.have.property('next')
-            response.next.should.eql(1)
+            response.next.should.eql('one')
             response.should.eql(orders[0])
             done()
           })
         })
 
         it('returns the next page', (done) => {
-          api.orders(1).then((response) => {
+          api.orders('one').then((response) => {
             response.should.have.property('previous')
-            response.previous.should.eql(0)
+            response.previous.should.eql('zero')
             response.should.eql(orders[1])
             done()
           })

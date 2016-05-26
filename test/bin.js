@@ -26,11 +26,15 @@ describe('Binary', () => {
       .reply(200, login)
 
       .get('/orders/')
-      .query({ cursor: 0 })
+      .query({ cursor: '' })
       .reply(200, orders[0])
 
       .get('/orders/')
-      .query({ cursor: 1 })
+      .query({ cursor: 'zero' })
+      .reply(200, orders[0])
+
+      .get('/orders/')
+      .query({ cursor: 'one' })
       .reply(200, orders[1])
 
       .get(/\/instruments\/.+/)

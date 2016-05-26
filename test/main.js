@@ -89,11 +89,15 @@ describe('Methods', () => {
     beforeEach(() => {
       scope
         .get('/orders/')
-        .query({ cursor: 0 })
+        .query({ cursor: '' })
         .reply(200, orders[0])
 
         .get('/orders/')
-        .query({ cursor: 1 })
+        .query({ cursor: 'zero' })
+        .reply(200, orders[0])
+
+        .get('/orders/')
+        .query({ cursor: 'one' })
         .reply(200, orders[1])
     })
 
@@ -105,10 +109,9 @@ describe('Methods', () => {
       main.getOrders()
         .catch(done)
         .then((response) => {
-          response.should.deep.eql(orders)
+          response.should.deep.eql(orders.assembled)
           done()
         })
-
     })
   })
 
@@ -121,11 +124,11 @@ describe('Methods', () => {
     })
 
     it('returns the symbols promise', () => {
-      main.getSymbols({ results: [] }).should.be.a('promise')
+      main.getSymbols([]).should.be.a('promise')
     })
 
     it('results in orders with symbols attached', (done) => {
-      main.getSymbols(orders)
+      main.getSymbols(orders.assembled)
         .catch(done)
         .then((result) => {
           result.should.be.an('array')
@@ -144,15 +147,15 @@ describe('Methods', () => {
     it('includes symbol')
 
     it('includes transaction type', () => {
-      main.getExecutions(orders.results).should.all.have.property('transaction_type')
+      main.getExecutions(orders.assembled).should.all.have.property('transaction_type')
     })
 
     it('includes formatted price', () => {
-      main.getExecutions(orders.results).should.all.have.property('price')
+      main.getExecutions(orders.assembled).should.all.have.property('price')
     })
 
     it('incluses formatted commission', () => {
-      main.getExecutions(orders.results).should.all.have.property('commission')
+      main.getExecutions(orders.assembled).should.all.have.property('commission')
     })
   })
 
