@@ -107,11 +107,11 @@ describe('Methods', () => {
 
     it('results in orders', (done) => {
       main.getOrders()
-        .catch(done)
         .then((response) => {
           response.should.deep.eql(orders.assembled)
           done()
         })
+        .catch(done)
     })
   })
 
@@ -129,12 +129,12 @@ describe('Methods', () => {
 
     it('results in orders with symbols attached', (done) => {
       main.getSymbols(orders.assembled)
-        .catch(done)
         .then((result) => {
           result.should.be.an('array')
             .that.all.have.property('symbol')
           done()
         })
+        .catch(done)
     })
   })
 
