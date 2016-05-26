@@ -89,8 +89,12 @@ describe('Methods', () => {
     beforeEach(() => {
       scope
         .get('/orders/')
-        .query(true)
-        .reply(200, orders)
+        .query({ cursor: 0 })
+        .reply(200, orders[0])
+
+        .get('/orders/')
+        .query({ cursor: 1 })
+        .reply(200, orders[1])
     })
 
     it('returns the orders promise', () => {

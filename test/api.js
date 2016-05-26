@@ -5,7 +5,6 @@ chai.should()
 const nock = require('nock')
 
 const orders = require('./fixtures/orders')
-const ordersPage1 = require('./fixtures/orders-page-1')
 const login = require('./fixtures/login')
 const instruments = require('./fixtures/instruments')
 
@@ -106,8 +105,12 @@ describe('Robinhood API', () => {
       beforeEach(() => {
         scope
           .get('/orders/')
-          .query(true)
-          .reply(200, orders)
+          .query({ cursor: 0 })
+          .reply(200, orders[0])
+
+          .get('/orders/')
+          .query({ cursor: 1 })
+          .reply(200, orders[1])
       })
 
       it('returns promise', () => {
@@ -124,30 +127,19 @@ describe('Robinhood API', () => {
 
       it('returns orders response', (done) => {
         api.orders().then((response) => {
-          response.should.eql(orders)
+          response.should.eql(orders[0])
           done()
         })
       })
 
       describe('with multiple pages', () => {
-        beforeEach(() => {
-          scope
-            .get('/orders/')
-            .query({ cursor: 0 })
-            .reply(200, orders)
-
-            .get('/orders/')
-            .query({ cursor: 1 })
-            .reply(200, ordersPage1)
-        })
-
         it('defaults to the first page')
 
         it('returns the next page number', (done) => {
           api.orders(0).then((response) => {
             response.should.have.property('next')
             response.next.should.eql(1)
-            response.should.eql(orders)
+            response.should.eql(orders[0])
             done()
           })
         })
@@ -156,7 +148,7 @@ describe('Robinhood API', () => {
           api.orders(1).then((response) => {
             response.should.have.property('previous')
             response.previous.should.eql(0)
-            response.should.eql(ordersPage1)
+            response.should.eql(orders[1])
             done()
           })
         })
