@@ -103,7 +103,7 @@ describe('Robinhood API', () => {
     })
 
     describe('orders', () => {
-      beforeEach((/*done*/) => {
+      beforeEach(() => {
         scope
           .get('/orders/')
           .query(true)
