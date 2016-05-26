@@ -11,6 +11,7 @@ const prompt = require('prompt')
 
 const orders = require('./fixtures/orders')
 const instruments = require('./fixtures/instruments')
+const executions = require('./fixtures/executions')
 
 const main = require('../lib/main')
 const utils = require('../lib/utils')
@@ -143,19 +144,24 @@ describe('Methods', () => {
       main.getExecutions([]).should.be.an('array')
     })
 
-    it('results in executions')
-    it('includes symbol')
+    it('results in executions', () => {
+      main.getExecutions(orders.withSymbols).should.deep.eql(executions)
+    })
+
+    it('includes symbol', () => {
+      main.getExecutions(orders.withSymbols).should.all.have.property('symbol')
+    })
 
     it('includes transaction type', () => {
-      main.getExecutions(orders.assembled).should.all.have.property('transaction_type')
+      main.getExecutions(orders.withSymbols).should.all.have.property('transaction_type')
     })
 
     it('includes formatted price', () => {
-      main.getExecutions(orders.assembled).should.all.have.property('price')
+      main.getExecutions(orders.withSymbols).should.all.have.property('price')
     })
 
     it('incluses formatted commission', () => {
-      main.getExecutions(orders.assembled).should.all.have.property('commission')
+      main.getExecutions(orders.withSymbols).should.all.have.property('commission')
     })
   })
 
@@ -175,7 +181,7 @@ describe('Methods', () => {
     })
 
     it('prints csv to stdout', (done) => {
-      main.convertToCsv([]).then(() => {
+      main.convertToCsv(executions).then(() => {
         spy.should.have.been.called
         done()
       })
