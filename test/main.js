@@ -11,6 +11,7 @@ const prompt = require('prompt')
 
 const orders = require('./fixtures/orders')
 const instruments = require('./fixtures/instruments')
+const executions = require('./fixtures/executions')
 
 const main = require('../lib/main')
 const utils = require('../lib/utils')
@@ -89,7 +90,16 @@ describe('Methods', () => {
     beforeEach(() => {
       scope
         .get('/orders/')
-        .reply(200, orders)
+        .query({ cursor: '' })
+        .reply(200, orders[0])
+
+        .get('/orders/')
+        .query({ cursor: 'zero' })
+        .reply(200, orders[0])
+
+        .get('/orders/')
+        .query({ cursor: 'one' })
+        .reply(200, orders[1])
     })
 
     it('returns the orders promise', () => {
@@ -98,12 +108,11 @@ describe('Methods', () => {
 
     it('results in orders', (done) => {
       main.getOrders()
-        .catch(done)
         .then((response) => {
-          response.should.deep.eql(orders)
+          response.should.deep.eql(orders.assembled)
           done()
         })
-
+        .catch(done)
     })
   })
 
@@ -116,17 +125,17 @@ describe('Methods', () => {
     })
 
     it('returns the symbols promise', () => {
-      main.getSymbols({ results: [] }).should.be.a('promise')
+      main.getSymbols([]).should.be.a('promise')
     })
 
     it('results in orders with symbols attached', (done) => {
-      main.getSymbols(orders)
-        .catch(done)
+      main.getSymbols(orders.assembled)
         .then((result) => {
           result.should.be.an('array')
             .that.all.have.property('symbol')
           done()
         })
+        .catch(done)
     })
   })
 
@@ -135,19 +144,24 @@ describe('Methods', () => {
       main.getExecutions([]).should.be.an('array')
     })
 
-    it('results in executions')
-    it('includes symbol')
+    it('results in executions', () => {
+      main.getExecutions(orders.withSymbols).should.deep.eql(executions)
+    })
+
+    it('includes symbol', () => {
+      main.getExecutions(orders.withSymbols).should.all.have.property('symbol')
+    })
 
     it('includes transaction type', () => {
-      main.getExecutions(orders.results).should.all.have.property('transaction_type')
+      main.getExecutions(orders.withSymbols).should.all.have.property('transaction_type')
     })
 
     it('includes formatted price', () => {
-      main.getExecutions(orders.results).should.all.have.property('price')
+      main.getExecutions(orders.withSymbols).should.all.have.property('price')
     })
 
     it('incluses formatted commission', () => {
-      main.getExecutions(orders.results).should.all.have.property('commission')
+      main.getExecutions(orders.withSymbols).should.all.have.property('commission')
     })
   })
 
@@ -167,7 +181,7 @@ describe('Methods', () => {
     })
 
     it('prints csv to stdout', (done) => {
-      main.convertToCsv([]).then(() => {
+      main.convertToCsv(executions).then(() => {
         spy.should.have.been.called
         done()
       })

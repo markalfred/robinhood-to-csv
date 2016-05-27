@@ -26,7 +26,16 @@ describe('Binary', () => {
       .reply(200, login)
 
       .get('/orders/')
-      .reply(200, orders)
+      .query({ cursor: '' })
+      .reply(200, orders[0])
+
+      .get('/orders/')
+      .query({ cursor: 'zero' })
+      .reply(200, orders[0])
+
+      .get('/orders/')
+      .query({ cursor: 'one' })
+      .reply(200, orders[1])
 
       .get(/\/instruments\/.+/)
       .reply(200, (uri) => instruments[utils.pluckLastOfPath(uri)])
