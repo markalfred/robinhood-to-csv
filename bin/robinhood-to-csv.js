@@ -9,4 +9,4 @@ module.exports =
     .then(main.getSymbols)
     .then(main.getExecutions)
     .then(main.convertToCsv)
-    .catch(err => { console.error(err); process.exit(1) })
+    .catch(err => { throw err })
