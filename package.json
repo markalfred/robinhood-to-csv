@@ -17,7 +17,6 @@
   "dependencies": {
     "axios": "^0.9.1",
     "json-2-csv": "^2.0.18",
-    "minimist": "^1.2.0",
     "prompt": "^1.0.0",
     "require-uncached": "^1.0.2",
     "robinhood": "markalfred/robinhood-node"
