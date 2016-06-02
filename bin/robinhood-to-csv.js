@@ -9,4 +9,5 @@ module.exports =
     .then(main.getSymbols)
     .then(main.getExecutions)
     .then(main.convertToCsv)
+    .then(main.printToStdOut)
     .catch(err => { throw err })
