@@ -1,5 +1,6 @@
 # Robinhood to CSV
 
+[![Coverage Status](https://coveralls.io/repos/github/markalfred/robinhood-to-csv/badge.svg?branch=master)](https://coveralls.io/github/markalfred/robinhood-to-csv?branch=master)
 [![CircleCI](https://circleci.com/gh/markalfred/robinhood-to-csv.svg?style=svg)](https://circleci.com/gh/markalfred/robinhood-to-csv)
 
 ## Installation
