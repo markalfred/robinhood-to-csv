@@ -21,4 +21,7 @@ module.exports =
     .then(main.getExecutions)
     .then(main.convertToCsv)
     .then((result) => main.printCsv(result, output))
-    .catch(err => { throw err })
+    .catch(err => {
+      console.error(err) // eslint-disable-line no-console
+      process.exit(1)
+    })
