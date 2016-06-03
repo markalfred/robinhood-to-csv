@@ -18,8 +18,7 @@
     "axios": "^0.9.1",
     "json-2-csv": "^2.0.18",
     "prompt": "^1.0.0",
-    "require-uncached": "^1.0.2",
-    "robinhood": "markalfred/robinhood-node"
+    "require-uncached": "^1.0.2"
   },
   "devDependencies": {
     "chai": "^3.5.0",
