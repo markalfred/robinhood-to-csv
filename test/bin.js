@@ -6,6 +6,7 @@ const nock = require('nock')
 
 const orders = require('./fixtures/orders')
 const login = require('./fixtures/login')
+const badLogin = require('./fixtures/bad-login')
 const instruments = require('./fixtures/instruments')
 const output = require('./fixtures/output.csv')
 
@@ -15,6 +16,11 @@ const utils = require('../lib/utils')
 const mockAuth = {
   username: 'foo',
   password: 'bar'
+}
+
+const badAuth = {
+  username: 'totes invalid username',
+  password: 'bad password'
 }
 
 const argvBackup = Array(...process.argv)
@@ -30,6 +36,9 @@ describe('Binary', () => {
     scope
       .post('/api-token-auth/', mockAuth)
       .reply(200, login)
+
+      .post('/api-token-auth/', badAuth)
+      .reply(400, badLogin)
 
       .get('/orders/')
       .query({ cursor: '' })
@@ -101,6 +110,28 @@ describe('Binary', () => {
     it('prints csv to stdout', (done) => {
       requireUncached('../bin/robinhood-to-csv').then(() => {
         main.printCsv.calledWith(output).should.be.true
+        done()
+      })
+    })
+  })
+
+  describe('with errors', () => {
+    beforeEach(() => {
+      sinon.stub(console, 'error')
+      sinon.stub(process, 'exit')
+      process.argv.push('--username', 'totes invalid username')
+      process.argv.push('--password', 'bad password')
+    })
+
+    afterEach(() => {
+      console.error.restore()
+      process.exit.restore()
+    })
+
+    it('throws the errors and exits', (done) => {
+      requireUncached('../bin/robinhood-to-csv').then(() => {
+        console.error.calledWithMatch({ data: badLogin }).should.be.true
+        process.exit.calledWith(1).should.be.true
         done()
       })
     })
