@@ -17,3 +17,8 @@ GOOG,200.00000,49.75,buy,0.00,2010-08-27T14:20:24.420000Z
 TSLA,99.00000,74.00,buy,0.00,2014-11-08T18:49:29.445000Z
 GOOG,100.00000,743.50,sell,0.02,2016-02-16T14:20:24.420000Z
 ```
+
+## Notes
+This CSV is formatted with importability into Google Finance in mind.
+If you need some additional data in the output, please
+[submit an issue](https://github.com/markalfred/robinhood-to-csv/issues/new?title=[Request for Additional Data]&labels=add data to csv).
