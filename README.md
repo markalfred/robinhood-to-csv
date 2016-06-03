@@ -2,8 +2,13 @@
 
 [![CircleCI](https://circleci.com/gh/markalfred/robinhood-to-csv.svg?style=svg)](https://circleci.com/gh/markalfred/robinhood-to-csv)
 
+## Installation
 ```bash
 $ npm install -g robinhood-to-csv
+```
+
+## Usage
+```bash
 $ robinhood-to-csv
 
 symbol,shares,price,transaction_type,commission,date_executed
