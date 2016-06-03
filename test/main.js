@@ -6,12 +6,14 @@ chai.use(sinonChai)
 chai.use(chaiThings)
 chai.should()
 
+const fs = require('fs')
 const nock = require('nock')
 const prompt = require('prompt')
 
 const orders = require('./fixtures/orders')
 const instruments = require('./fixtures/instruments')
 const executions = require('./fixtures/executions')
+const output = require('./fixtures/output.csv')
 
 const main = require('../lib/main')
 const utils = require('../lib/utils')
@@ -22,7 +24,8 @@ describe('Library', () => {
     'getOrders',
     'getSymbols',
     'getExecutions',
-    'convertToCsv'
+    'convertToCsv',
+    'printCsv'
   ]
 
   it('is importable', () => {
@@ -166,10 +169,6 @@ describe('Methods', () => {
   })
 
   describe('convertToCsv', () => {
-    let spy
-    beforeEach(() => { spy = sinon.spy(console, 'log') })
-    afterEach(() => { spy.restore() })
-
     it('returns the csv promise', () => {
       main.convertToCsv([]).should.be.a('promise')
     })
@@ -180,11 +179,27 @@ describe('Methods', () => {
         .catch(() => done())
     })
 
-    it('prints csv to stdout', (done) => {
-      main.convertToCsv(executions).then(() => {
-        spy.should.have.been.called
+    it('results in the csv', (done) => {
+      main.convertToCsv(executions).then((result) => {
+        result.should.eq(output)
         done()
       })
+    })
+  })
+
+  describe('printCsv', () => {
+    it('prints to stdout', () => {
+      let log = sinon.stub(console, 'log')
+      main.printCsv('foo,bar')
+      log.restore()
+    })
+
+    it('prints to a file', () => {
+      const filename = Math.random().toString(36).substring(2)
+      const dest = `/tmp/${filename}.csv`
+      main.printCsv(output, dest)
+      fs.readFileSync(dest, 'utf8').should.eql(output)
+      fs.unlink(dest)
     })
   })
 })

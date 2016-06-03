@@ -1,12 +1,24 @@
 #!/usr/bin/env node
-const argv = require('minimist')(process.argv.slice(2));
+
+const pkg = require('../package.json')
+const program = require('commander')
 
 const main = require('../lib/main')
 
+program
+  .version(pkg.version)
+  .option('-u, --username <username>', 'Robinhood login username')
+  .option('-p, --password <password>', 'Robinhood login password')
+  .option('-o, --output <file>', 'output filename (default: stdout)')
+  .parse(process.argv)
+
+const { username, password, output } = program
+
 module.exports =
-  main.login(argv)
+  main.login({ username, password })
     .then(main.getOrders)
     .then(main.getSymbols)
     .then(main.getExecutions)
     .then(main.convertToCsv)
-    .catch(err => { console.error(err); process.exit(1) })
+    .then((result) => main.printCsv(result, output))
+    .catch(err => { throw err })

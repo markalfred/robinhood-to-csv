@@ -1,0 +1,7 @@
+module.exports =
+`symbol,shares,price,transaction_type,commission,date_executed
+MARK,1.00000,218.00,buy,0.00,2016-03-16T13:30:01.016000Z
+ALF,1.00000,18.75,sell,0.02,2016-03-03T14:41:14.665000Z
+ALF,1.00000,15.00,buy,0.00,2016-02-08T18:49:29.445000Z
+ALF,1.00000,15.00,buy,0.00,2016-02-09T18:49:29.445000Z
+`

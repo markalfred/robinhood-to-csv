@@ -1,3 +1,5 @@
+const requireUncached = require('require-uncached')
+
 require('chai').should()
 const sinon = require('sinon')
 const nock = require('nock')
@@ -5,6 +7,7 @@ const nock = require('nock')
 const orders = require('./fixtures/orders')
 const login = require('./fixtures/login')
 const instruments = require('./fixtures/instruments')
+const output = require('./fixtures/output.csv')
 
 const main = require('../lib/main')
 const utils = require('../lib/utils')
@@ -14,13 +17,14 @@ const mockAuth = {
   password: 'bar'
 }
 
+const argvBackup = Array(...process.argv)
+
 describe('Binary', () => {
   let scope
 
-  before(() => { scope = nock('https://api.robinhood.com') })
-  after(() => { nock.cleanAll() })
-
   beforeEach(() => {
+    scope = nock('https://api.robinhood.com')
+
     scope
       .post('/api-token-auth/', mockAuth)
       .reply(200, login)
@@ -42,29 +46,61 @@ describe('Binary', () => {
       .persist()
   })
 
+  afterEach(() => {
+    nock.cleanAll()
+    process.argv = Array(...argvBackup)
+  })
+
   it('imports main lib', () => {
     main.should.be.ok
   })
 
-  it('accepts arguments')
+  describe('arguments', () => {
+    beforeEach(() => {
+      sinon.stub(main, 'printCsv')
+      sinon.spy(main, 'login')
+      process.argv = ['node', 'robinhood-to-csv.js']
+      process.argv.push('--username', 'foo')
+      process.argv.push('--password', 'bar')
+    })
+
+    afterEach(() => {
+      main.printCsv.restore()
+      main.login.restore()
+    })
+
+    describe('username', () => {
+      it('is accepted in long form', (done) => {
+        requireUncached('../bin/robinhood-to-csv').then(() => {
+          main.login.calledWithMatch({ username: 'foo' }).should.be.true
+          done()
+        })
+      })
+    })
+
+    describe('password', () => {
+      it('is accepted in long form', (done) => {
+        requireUncached('../bin/robinhood-to-csv').then(() => {
+          main.login.calledWithMatch({ password: 'bar' }).should.be.true
+          done()
+        })
+      })
+    })
+  })
 
   describe('output', () => {
-    let spy
+    beforeEach(() => {
+      sinon.stub(main, 'printCsv')
+      process.argv = ['node', 'robinhood-to-csv.js']
+      process.argv.push('--username', 'foo')
+      process.argv.push('--password', 'bar')
+    })
 
-    beforeEach(() => { spy = sinon.stub(console, 'log') })
-    afterEach(() => { spy.restore() })
+    afterEach(() => { main.printCsv.restore() })
 
     it('prints csv to stdout', (done) => {
-      if (process.argv.indexOf('--username') === -1) {
-        process.argv.push('--username', 'foo')
-      }
-
-      if (process.argv.indexOf('--password') === -1) {
-        process.argv.push('--password', 'bar')
-      }
-
-      require('../bin/robinhood-to-csv').then(() => {
-        spy.called.should.be.true
+      requireUncached('../bin/robinhood-to-csv').then(() => {
+        main.printCsv.calledWith(output).should.be.true
         done()
       })
     })
