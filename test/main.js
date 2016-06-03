@@ -6,6 +6,7 @@ chai.use(sinonChai)
 chai.use(chaiThings)
 chai.should()
 
+const fs = require('fs')
 const nock = require('nock')
 const prompt = require('prompt')
 
@@ -24,7 +25,7 @@ describe('Library', () => {
     'getSymbols',
     'getExecutions',
     'convertToCsv',
-    'printToStdOut'
+    'printCsv'
   ]
 
   it('is importable', () => {
@@ -186,11 +187,19 @@ describe('Methods', () => {
     })
   })
 
-  describe('printToStdOut', () => {
+  describe('printCsv', () => {
     it('prints to stdout', () => {
       let log = sinon.stub(console, 'log')
-      main.printToStdOut('foo,bar')
+      main.printCsv('foo,bar')
       log.restore()
+    })
+
+    it('prints to a file', () => {
+      const filename = Math.random().toString(36).substring(2)
+      const dest = `/tmp/${filename}.csv`
+      main.printCsv(output, dest)
+      fs.readFileSync(dest, 'utf8').should.eql(output)
+      fs.unlink(dest)
     })
   })
 })

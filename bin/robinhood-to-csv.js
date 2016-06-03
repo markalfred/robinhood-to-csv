@@ -7,11 +7,12 @@ const main = require('../lib/main')
 
 program
   .version(pkg.version)
-  .option('-u, --username <username>', 'Username')
-  .option('-p, --password <password>', 'Password')
+  .option('-u, --username <username>', 'Robinhood login username')
+  .option('-p, --password <password>', 'Robinhood login password')
+  .option('-o, --output <file>', 'output filename (default: stdout)')
   .parse(process.argv)
 
-const { username, password } = program
+const { username, password, output } = program
 
 module.exports =
   main.login({ username, password })
@@ -19,5 +20,5 @@ module.exports =
     .then(main.getSymbols)
     .then(main.getExecutions)
     .then(main.convertToCsv)
-    .then(main.printToStdOut)
+    .then((result) => main.printCsv(result, output))
     .catch(err => { throw err })

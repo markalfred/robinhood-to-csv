@@ -57,7 +57,7 @@ describe('Binary', () => {
 
   describe('arguments', () => {
     beforeEach(() => {
-      sinon.stub(main, 'printToStdOut')
+      sinon.stub(main, 'printCsv')
       sinon.spy(main, 'login')
       process.argv = ['node', 'robinhood-to-csv.js']
       process.argv.push('--username', 'foo')
@@ -65,7 +65,7 @@ describe('Binary', () => {
     })
 
     afterEach(() => {
-      main.printToStdOut.restore()
+      main.printCsv.restore()
       main.login.restore()
     })
 
@@ -90,17 +90,17 @@ describe('Binary', () => {
 
   describe('output', () => {
     beforeEach(() => {
-      sinon.stub(main, 'printToStdOut')
+      sinon.stub(main, 'printCsv')
       process.argv = ['node', 'robinhood-to-csv.js']
       process.argv.push('--username', 'foo')
       process.argv.push('--password', 'bar')
     })
 
-    afterEach(() => { main.printToStdOut.restore() })
+    afterEach(() => { main.printCsv.restore() })
 
     it('prints csv to stdout', (done) => {
       requireUncached('../bin/robinhood-to-csv').then(() => {
-        main.printToStdOut.calledWith(output).should.be.true
+        main.printCsv.calledWith(output).should.be.true
         done()
       })
     })
