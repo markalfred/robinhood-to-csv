@@ -10,6 +10,9 @@
   },
   "scripts": {
     "coverage": "istanbul cover _mocha",
+    "precoveralls": "npm run coverage -- --report lcovonly",
+    "coveralls": "cat ./coverage/lcov.info | coveralls",
+    "postcoveralls": "rm -rf ./coverage",
     "test": "mocha"
   },
   "author": "Mark Battersby",
@@ -23,8 +26,10 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "chai-things": "^0.2.0",
+    "coveralls": "^2.11.9",
     "istanbul": "^0.4.3",
     "mocha": "^2.4.5",
+    "mocha-lcov-reporter": "^1.2.0",
     "nock": "^8.0.0",
     "require-uncached": "^1.0.2",
     "sinon": "^1.17.3",
