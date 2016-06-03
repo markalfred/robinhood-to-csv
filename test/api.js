@@ -208,7 +208,7 @@ describe('Robinhood API', () => {
 
         before((done) => {
           api.login(realAuth)
-            .then(api.orders)
+            .then(() => api.orders())
             .then((response) => {
               realOrders = response
               done()
@@ -241,7 +241,7 @@ describe('Robinhood API', () => {
 
         before((done) => {
           api.login(realAuth)
-            .then(api.orders)
+            .then(() => api.orders())
             .then((response) => api.instrument(utils.pluckLastOfPath(response.results[0].instrument)))
             .then((response) => {
               realInstrument = response
