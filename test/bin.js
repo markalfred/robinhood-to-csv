@@ -23,6 +23,8 @@ describe('Binary', () => {
   let scope
 
   beforeEach(() => {
+    process.argv = ['node', 'robinhood-to-csv.js']
+
     scope = nock('https://api.robinhood.com')
 
     scope
@@ -47,8 +49,8 @@ describe('Binary', () => {
   })
 
   afterEach(() => {
-    nock.cleanAll()
     process.argv = Array(...argvBackup)
+    nock.cleanAll()
   })
 
   it('imports main lib', () => {
@@ -59,7 +61,6 @@ describe('Binary', () => {
     beforeEach(() => {
       sinon.stub(main, 'printCsv')
       sinon.spy(main, 'login')
-      process.argv = ['node', 'robinhood-to-csv.js']
       process.argv.push('--username', 'foo')
       process.argv.push('--password', 'bar')
     })
@@ -91,7 +92,6 @@ describe('Binary', () => {
   describe('output', () => {
     beforeEach(() => {
       sinon.stub(main, 'printCsv')
-      process.argv = ['node', 'robinhood-to-csv.js']
       process.argv.push('--username', 'foo')
       process.argv.push('--password', 'bar')
     })
