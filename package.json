@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.9.1",
+    "commander": "^2.9.0",
     "json-2-csv": "^2.0.18",
     "prompt": "^1.0.0"
   },
