@@ -187,6 +187,10 @@ describe('Methods', () => {
   })
 
   describe('printToStdOut', () => {
-    it('prints to stdout')
+    it('prints to stdout', () => {
+      let log = sinon.stub(console, 'log')
+      main.printToStdOut('foo,bar')
+      log.restore()
+    })
   })
 })
