@@ -199,7 +199,7 @@ describe('Robinhood API', () => {
               response.should.have.property('token').that.is.a('string')
               done()
             })
-            .catch((err) => done(new Error(`${err.status}: ${err.statusText}`)))
+            .catch(done)
         })
       })
 
@@ -208,12 +208,12 @@ describe('Robinhood API', () => {
 
         before((done) => {
           api.login(realAuth)
-            .then(api.orders)
+            .then(() => api.orders())
             .then((response) => {
               realOrders = response
               done()
             })
-            .catch((err) => done(new Error(`${err.status}: ${err.statusText}`)))
+            .catch(done)
         })
 
         it('matches expected schema', () => {
@@ -241,13 +241,13 @@ describe('Robinhood API', () => {
 
         before((done) => {
           api.login(realAuth)
-            .then(api.orders)
+            .then(() => api.orders())
             .then((response) => api.instrument(utils.pluckLastOfPath(response.results[0].instrument)))
             .then((response) => {
               realInstrument = response
               done()
             })
-            .catch((err) => done(new Error(`${err.status}: ${err.statusText}`)))
+            .catch(done)
         })
 
         it('matches expected schema', () => {
