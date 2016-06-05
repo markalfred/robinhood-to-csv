@@ -1,8 +1,11 @@
-const requireUncached = require('require-uncached')
-
-require('chai').should()
+const chai = require('chai')
 const sinon = require('sinon')
+const sinonChai = require('sinon-chai')
+chai.use(sinonChai)
+chai.should()
+
 const nock = require('nock')
+const requireUncached = require('require-uncached')
 
 const orders = require('./fixtures/orders')
 const login = require('./fixtures/login')
@@ -82,7 +85,7 @@ describe('Binary', () => {
     describe('username', () => {
       it('is accepted in long form', (done) => {
         requireUncached('../bin/robinhood-to-csv').then(() => {
-          main.login.calledWithMatch({ username: 'foo' }).should.be.true
+          main.login.should.have.been.calledWithMatch({ username: 'foo' })
           done()
         })
       })
@@ -91,7 +94,7 @@ describe('Binary', () => {
     describe('password', () => {
       it('is accepted in long form', (done) => {
         requireUncached('../bin/robinhood-to-csv').then(() => {
-          main.login.calledWithMatch({ password: 'bar' }).should.be.true
+          main.login.should.have.been.calledWithMatch({ password: 'bar' })
           done()
         })
       })
@@ -109,7 +112,7 @@ describe('Binary', () => {
 
     it('prints csv to stdout', (done) => {
       requireUncached('../bin/robinhood-to-csv').then(() => {
-        main.printCsv.calledWith(output).should.be.true
+        main.printCsv.should.have.been.calledWith(output)
         done()
       })
     })
@@ -130,8 +133,8 @@ describe('Binary', () => {
 
     it('throws the errors and exits', (done) => {
       requireUncached('../bin/robinhood-to-csv').then(() => {
-        console.error.calledWithMatch({ data: badLogin }).should.be.true
-        process.exit.calledWith(1).should.be.true
+        console.error.should.have.been.calledWithMatch({ data: badLogin })
+        process.exit.should.have.been.calledWith(1)
         done()
       })
     })
