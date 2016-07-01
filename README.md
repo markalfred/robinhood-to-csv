@@ -19,6 +19,15 @@ TSLA,99.00000,74.00,buy,0.00,2014-11-08T18:49:29.445000Z
 GOOG,100.00000,743.50,sell,0.02,2016-02-16T14:20:24.420000Z
 ```
 
+## Options
+```bash
+-h, --help                 output usage information
+-V, --version              output the version number
+-u, --username <username>  Robinhood login username
+-p, --password <password>  Robinhood login password
+-o, --output <file>        output filename (default: stdout)
+```
+
 ## Notes
 This CSV is formatted with importability into Google Finance in mind.
 If you need some additional data in the output, please
