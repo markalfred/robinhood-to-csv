@@ -137,7 +137,12 @@ describe('Robinhood API', () => {
       })
 
       describe('with multiple pages', () => {
-        it('defaults to the first page')
+        it('defaults to the first page', (done) => {
+          api.orders().then((response) => {
+            response.should.eql(orders[0])
+            done()
+          })
+        })
 
         it('returns the next page number', (done) => {
           api.orders('zero').then((response) => {
