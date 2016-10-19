@@ -8,8 +8,8 @@ const orders = require('./fixtures/orders')
 const login = require('./fixtures/login')
 const instruments = require('./fixtures/instruments')
 
-const API = require('../lib/api')
-const utils = require('../lib/utils')
+const API = require('../src/lib/api')
+const utils = require('../src/lib/utils')
 
 const mockAuth = {
   username: 'foo',

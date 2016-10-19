@@ -6,7 +6,7 @@
   },
   "description": "Export Robinhood transactions to CSV",
   "bin": {
-    "robinhood-to-csv": "bin/robinhood-to-csv.js"
+    "robinhood-to-csv": "src/bin/robinhood-to-csv.js"
   },
   "scripts": {
     "coverage": "istanbul cover _mocha",

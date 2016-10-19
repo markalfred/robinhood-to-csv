@@ -13,8 +13,8 @@ const badLogin = require('./fixtures/bad-login')
 const instruments = require('./fixtures/instruments')
 const output = require('./fixtures/output.csv')
 
-const main = require('../lib/main')
-const utils = require('../lib/utils')
+const main = require('../src/lib/main')
+const utils = require('../src/lib/utils')
 
 const mockAuth = {
   username: 'foo',
@@ -26,7 +26,7 @@ const badAuth = {
   password: 'bad password'
 }
 
-const binPath = '../bin/robinhood-to-csv'
+const binPath = '../src/bin/robinhood-to-csv'
 const argvBackup = Array(...process.argv)
 
 describe('Binary', () => {
