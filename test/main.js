@@ -15,8 +15,8 @@ const instruments = require('./fixtures/instruments')
 const executions = require('./fixtures/executions')
 const output = require('./fixtures/output.csv')
 
-const main = require('../lib/main')
-const utils = require('../lib/utils')
+const main = require('../src/lib/main')
+const utils = require('../src/lib/utils')
 
 describe('Library', () => {
   const PUBLIC_METHODS = [

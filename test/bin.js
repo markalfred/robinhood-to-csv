@@ -13,8 +13,8 @@ const badLogin = require('./fixtures/bad-login')
 const instruments = require('./fixtures/instruments')
 const output = require('./fixtures/output.csv')
 
-const main = require('../lib/main')
-const utils = require('../lib/utils')
+const main = require('../src/lib/main')
+const utils = require('../src/lib/utils')
 
 const mockAuth = {
   username: 'foo',
@@ -26,6 +26,7 @@ const badAuth = {
   password: 'bad password'
 }
 
+const binPath = '../src/bin/robinhood-to-csv'
 const argvBackup = Array(...process.argv)
 
 describe('Binary', () => {
@@ -84,7 +85,7 @@ describe('Binary', () => {
 
     describe('username', () => {
       it('is accepted in long form', (done) => {
-        requireUncached('../bin/robinhood-to-csv').then(() => {
+        requireUncached(binPath).then(() => {
           main.login.should.have.been.calledWithMatch({ username: 'foo' })
           done()
         })
@@ -93,7 +94,7 @@ describe('Binary', () => {
 
     describe('password', () => {
       it('is accepted in long form', (done) => {
-        requireUncached('../bin/robinhood-to-csv').then(() => {
+        requireUncached(binPath).then(() => {
           main.login.should.have.been.calledWithMatch({ password: 'bar' })
           done()
         })
@@ -111,7 +112,7 @@ describe('Binary', () => {
     afterEach(() => { main.printCsv.restore() })
 
     it('prints csv to stdout', (done) => {
-      requireUncached('../bin/robinhood-to-csv').then(() => {
+      requireUncached(binPath).then(() => {
         main.printCsv.should.have.been.calledWith(output)
         done()
       })
@@ -132,7 +133,7 @@ describe('Binary', () => {
     })
 
     it('throws the errors and exits', (done) => {
-      requireUncached('../bin/robinhood-to-csv').then(() => {
+      requireUncached(binPath).then(() => {
         console.error.should.have.been.calledWithMatch({ data: badLogin })
         process.exit.should.have.been.calledWith(1)
         done()
