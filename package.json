@@ -6,9 +6,15 @@
   },
   "description": "Export Robinhood transactions to CSV",
   "bin": {
-    "robinhood-to-csv": "src/bin/robinhood-to-csv.js"
+    "robinhood-to-csv": "dist/bin/robinhood-to-csv.js"
   },
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
   "scripts": {
+    "build": "babel src -d dist",
+    "preversion": "npm run build",
     "coverage": "istanbul cover _mocha",
     "precoveralls": "npm run coverage -- --report lcovonly",
     "coveralls": "cat ./coverage/lcov.info | coveralls",
@@ -24,6 +30,8 @@
     "prompt": "^1.0.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
     "chai": "^3.5.0",
     "chai-things": "^0.2.0",
     "coveralls": "^2.11.9",
