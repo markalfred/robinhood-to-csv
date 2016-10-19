@@ -1,6 +1,6 @@
 {
   "name": "robinhood-to-csv",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "engines": {
     "node": ">=6.0.0"
   },
