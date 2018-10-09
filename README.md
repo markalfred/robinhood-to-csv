@@ -1,3 +1,8 @@
+# 🚨 This Package is Deprecated 🚨
+Now that Robinhood has a web application, its API has changed and this package no longer works. 
+
+I hope you all found it as useful as I did. Thanks for the support!
+
 # Robinhood to CSV
 
 [![Coverage Status](https://coveralls.io/repos/github/markalfred/robinhood-to-csv/badge.svg?branch=master)](https://coveralls.io/github/markalfred/robinhood-to-csv?branch=master)
